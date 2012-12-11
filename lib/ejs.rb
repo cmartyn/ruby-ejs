@@ -38,8 +38,8 @@ module EJS
       replace_escape_tags!(source, options)
       replace_interpolation_tags!(source, options)
       replace_evaluation_tags!(source, options)
-      "function(obj){var __p=[],print=function(){__p.push.apply(__p,arguments);};" +
-        "with(obj||{}){__p.push('#{source}');}return __p.join('');}"
+      "function(obj){var __p = []; var print = function () {__p.push.apply(__p,arguments);};" +
+        "with(obj||{}){ __p.push('#{source}');} return __p.join('');}"
     end
 
     # Evaluates an EJS template with the given local variables and
@@ -50,10 +50,10 @@ module EJS
     #     EJS.evaluate("Hello <%= name %>", :name => "world")
     #     # => "Hello world"
     #
-    def evaluate(template, locals = {}, options = {})
-      require "execjs"
-      context = ExecJS.compile("var evaluate = #{compile(template, options)}")
-      context.call("evaluate", locals)
+    def evaluate(template, context = {}, options = {})
+      #require "execjs"
+      context = V8::Context.new(context) unless context.is_a? V8::Context
+      context.eval("var s = #{compile(template, options)}(this);s;", 'source.js')
     end
 
     protected
