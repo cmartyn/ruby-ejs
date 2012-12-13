@@ -52,7 +52,7 @@ module EJS
     #
     def evaluate(template, context = {}, options = {})
       #require "execjs"
-      context = V8::Context.new(context) unless context.is_a? V8::Context
+      context = Rhino::Context.new(context) unless context.is_a? Rhino::Context
       context.eval("var s = #{compile(template, options)}(this);s;", 'source.js')
     end
 

@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["README.md", "LICENSE", "lib/**/*.rb"]
 
-  s.add_development_dependency "therubyracer"
+  s.add_development_dependency "therubyrhino"
 
   s.authors = ["Sam Stephenson"]
   s.email = ["sstephenson@gmail.com"]
